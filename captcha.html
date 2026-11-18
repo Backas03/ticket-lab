@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>보안문자 훈련 - TicketLAB</title>
+    <link rel="stylesheet" href="css/captcha.css">
+</head>
+<body>
+    <div class="header">
+        <a href="index.html"><h1>TicketLAB</h1></a>
+    </div>
+
+    <section class="panel intro">
+        <h2>보안문자 훈련</h2>
+        <ul>
+            <li>영문 6자리 보안문자를 5번 입력하십시오.</li>
+            <li>입력하고 Enter를 누르면 다음 문제로 넘어갑니다.</li>
+            <li>대소문자는 구분하지 않습니다.</li>
+        </ul>
+        <button class="start-btn" type="button">시작하기</button>
+    </section>
+
+    <section class="panel countdown">
+        <p class="countdown-label">시작합니다</p>
+        <p class="countdown-num">3</p>
+    </section>
+
+    <section class="panel play">
+        <div class="play-head">
+            <span>보안문자 입력</span>
+            <span class="progress">1 / 5</span>
+        </div>
+        <p class="guide">아래 문자를 입력해 주세요.</p>
+        <div class="captcha"></div>
+        <form class="answer-form">
+            <input class="answer" maxlength="6" autocomplete="off" placeholder="보안문자 6자리">
+            <button type="submit">입력완료</button>
+        </form>
+        <p class="feedback"></p>
+    </section>
+
+    <section class="panel result">
+        <h2>결과</h2>
+        <div class="result-stats"></div>
+        <ol class="result-list"></ol>
+        <div class="result-actions">
+            <button class="retry" type="button">다시 하기</button>
+            <a class="home" href="index.html">메인으로</a>
+        </div>
+    </section>
+</body>
+</html>
