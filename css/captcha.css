@@ -1,3 +1,27 @@
-.countdown, .play, .result {
+.countdown {
+    display: none;
+    text-align: center;
+}
+
+.play {
     display: none;
 }
+
+.result {
+    display: none;
+}
+
+.countdown-label {
+    margin: 0;
+    font-size: 16px;
+    color: #6b7185;
+}
+
+.countdown-num {
+    margin: 8px 0 0;
+    font-size: 96px;
+    font-weight: bold;
+    line-height: 1;
+    color: #f0803c;
+}
+
