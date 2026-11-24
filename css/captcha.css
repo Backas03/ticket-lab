@@ -25,3 +25,40 @@
     color: #f0803c;
 }
 
+.result-list li {
+    overflow: hidden;
+    list-style: none;
+    font-size: 14px;
+}
+
+.result-list .no {
+    float: left;
+    width: 20px;
+    margin-right: 10px;
+    color: #6b7185;
+}
+
+.result-list .word {
+    float: left;
+    font-family: Georgia, serif;
+    font-size: 17px;
+    letter-spacing: 3px;
+}
+
+.result-list .word em {
+    font-style: normal;
+    color: #d64545;
+    text-decoration: underline;
+}
+
+.result-list .correct-hint {
+    margin-left: 6px;
+    font-family: inherit;
+    font-size: 12px;
+    letter-spacing: 0;
+    color: #6b7185;
+}
+
+.result-list .time {
+    float: right;
+}

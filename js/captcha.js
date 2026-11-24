@@ -15,6 +15,8 @@ let progress = document.querySelector('.progress');
 let answerForm = document.querySelector('.answer-form');
 let answerInput = document.querySelector('.answer');
 let feedback = document.querySelector('.feedback');
+let resultStats = document.querySelector('.result-stats');
+let resultList = document.querySelector('.result-list');
 
 let answer = '';
 let shownAt = 0;
@@ -151,10 +153,52 @@ function finish() {
     };
 
     userData.addRecord({ mode: 'captcha', trials: totalRounds, metrics: metrics, rounds: rounds });
+    showResult(metrics);
 }
 
+function markTypos(round) {
+    let output = '';
+    for (let i = 0; i < round.typed.length; i++) {
+        if (round.typed[i] == round.answer[i]) {
+            output += round.typed[i];
+        } else {
+            output += '<em>' + round.typed[i] + '</em>';
+        }
+    }
+    return output;
+}
 
+function showResult(metrics) {
+    showScreen('result');
+
+    resultStats.innerHTML =
+        '<div><span>평균 시간</span><b>' + toSec(metrics.avgTimeMs) + '초</b></div>' +
+        '<div><span>최고 기록</span><b>' + toSec(metrics.bestTimeMs) + '초</b></div>' +
+        '<div><span>오타율</span><b>' + Math.round(metrics.typoRate * 1000) / 10 + '%</b></div>' +
+        '<div><span>정답</span><b>' + metrics.correct + ' / ' + totalRounds + '</b></div>';
+
+    let output = '';
+    for (let i = 0; i < rounds.length; i++) {
+        let round = rounds[i];
+        output += '<li>';
+        output += '<span class="no">' + (i + 1) + '</span>';
+        output += '<span class="word">' + markTypos(round);
+        if (round.typos > 0) {
+            output += '<span class="correct-hint">정답 ' + round.answer + '</span>';
+        }
+        output += '</span>';
+        output += '<span class="time">' + toSec(round.timeMs) + '초</span>';
+        output += '</li>';
+    }
+    resultList.innerHTML = output;
+}
 
 document.querySelector('.start-btn').addEventListener('click', function() {
+    startCountdown();
+});
+
+document.querySelector('.retry').addEventListener('click', function() {
+    rounds = [];
+    feedback.textContent = '';
     startCountdown();
 });
