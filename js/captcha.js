@@ -12,14 +12,18 @@ let screens = {
 let countNum = document.querySelector('.countdown-num');
 let captchaBox = document.querySelector('.captcha');
 let progress = document.querySelector('.progress');
-let answerForm = document.querySelector('.answer-form');
-let answerInput = document.querySelector('.answer');
+let answerSlots = document.querySelector('.answer-slots');
 let feedback = document.querySelector('.feedback');
+let resultGrade = document.querySelector('.result-grade');
 let resultStats = document.querySelector('.result-stats');
 let resultList = document.querySelector('.result-list');
 
 let answer = '';
+let typed = '';
+let wrongKeys = 0;
+let totalKeys = 0;
 let shownAt = 0;
+let playing = false;
 let rounds = [];
 
 function showScreen(name) {
@@ -32,13 +36,16 @@ function showScreen(name) {
     }
 }
 
-function random(min, max) {
-    return min + Math.floor(Math.random() * (max - min + 1));
-}
-
 function toSec(ms) {
     return Math.round(ms / 10) / 100;
 }
+
+function showFeedback(text, color) {
+    feedback.textContent = text;
+    feedback.style.color = color;
+}
+
+
 
 function startCountdown() {
     showScreen('countdown');
@@ -52,6 +59,7 @@ function startCountdown() {
         } else {
             clearInterval(timer);
             showScreen('play');
+            playing = true;
             nextRound();
         }
     }, 1000);
@@ -60,48 +68,54 @@ function startCountdown() {
 function randomCode() {
     let code = '';
     for (let i = 0; i < codeLength; i++) {
-        code += letters[random(0, letters.length - 1)];
+        code += letters[Math.floor(Math.random() * letters.length)];
     }
     return code;
 }
 
-function drawCaptcha(code) {
+function drawSlots() {
     let output = '';
-    for (let i = 0; i < code.length; i++) {
-        output += '<span style="font-size: ' + random(30, 38) + 'px;">' + code[i] + '</span>';
+    for (let i = 0; i < codeLength; i++) {
+        let ch = '';
+        if (i < typed.length) {
+            ch = typed[i];
+        }
+        if (i == typed.length) {
+            output += '<span class="slot now">' + ch + '</span>';
+        } else {
+            output += '<span class="slot">' + ch + '</span>';
+        }
     }
-    captchaBox.innerHTML = output;
+    answerSlots.innerHTML = output;
 }
 
 function nextRound() {
     progress.textContent = (rounds.length + 1) + ' / ' + totalRounds;
     answer = randomCode();
-    drawCaptcha(answer);
-    answerInput.value = '';
-    answerInput.focus();
+    captchaBox.textContent = answer;
+    typed = '';
+    wrongKeys = 0;
+    totalKeys = 0;
+    drawSlots();
     shownAt = new Date().getTime();
 }
 
-answerInput.addEventListener('input', function() {
-    let typed = answerInput.value.toUpperCase();
-    let cleaned = '';
-    for (let i = 0; i < typed.length; i++) {
-        let ch = typed[i];
-        if (ch >= 'ㄱ' && ch <= '힣') {
-            feedback.textContent = '한글로 입력되고 있어요. 한/영 키를 눌러주세요.';
-        }
-        if (ch >= 'A' && ch <= 'Z') {
-            cleaned += ch;
-        }
+function typeLetter(ch) {
+    if (typed.length >= codeLength) {
+        return;
     }
-    answerInput.value = cleaned;
-});
+    if (ch != answer[typed.length]) {
+        wrongKeys++;
+    }
+    totalKeys++;
+    typed += ch;
+    drawSlots();
+}
 
-answerForm.onsubmit = function() {
-    let typed = answerInput.value.toUpperCase();
+function submitAnswer() {
     if (typed.length < codeLength) {
-        feedback.textContent = '6자리를 모두 입력해 주세요.';
-        return false;
+        showFeedback('6자리를 모두 입력해 주세요.', '#ff6b66');
+        return;
     }
 
     let timeMs = new Date().getTime() - shownAt;
@@ -112,12 +126,21 @@ answerForm.onsubmit = function() {
         }
     }
 
-    rounds.push({ answer: answer, typed: typed, typos: typos, timeMs: timeMs });
+    rounds.push({
+        answer: answer,
+        typed: typed,
+        typos: typos,
+        wrongKeys: wrongKeys,
+        totalKeys: totalKeys,
+        timeMs: timeMs
+    });
 
-    if (typos == 0) {
-        feedback.textContent = '정답 · ' + toSec(timeMs) + '초';
+    if (typos == 0 && wrongKeys == 0) {
+        showFeedback('정답 · ' + toSec(timeMs) + '초', '#7ee08a');
+    } else if (typos == 0) {
+        showFeedback('정답 · 오타 ' + wrongKeys + '번 수정 · ' + toSec(timeMs) + '초', '#f0c43c');
     } else {
-        feedback.textContent = '오타 ' + typos + '개 · ' + toSec(timeMs) + '초';
+        showFeedback('오답 · 틀린 글자 ' + typos + '개 · ' + toSec(timeMs) + '초', '#ff6b66');
     }
 
     if (rounds.length == totalRounds) {
@@ -125,18 +148,64 @@ answerForm.onsubmit = function() {
     } else {
         nextRound();
     }
-    return false;
+}
+
+document.onkeydown = function(event) {
+    if (!playing) {
+        return true;
+    }
+    if (event.ctrlKey || event.metaKey || event.altKey) {
+        return true;
+    }
+
+    let key = event.key;
+
+    if (key == 'Enter') {
+        submitAnswer();
+        return false;
+    }
+
+    if (key == 'Backspace') {
+        if (typed.length > 0) {
+            typed = typed.slice(0, -1);
+            drawSlots();
+        }
+        return false;
+    }
+
+    if (key == 'Process') {
+        showFeedback('한글로 입력되고 있어요. 한/영 키를 눌러주세요.', '#ff6b66');
+        return false;
+    }
+
+    if (key.length == 1) {
+        let ch = key.toUpperCase();
+        if (ch >= 'A' && ch <= 'Z') {
+            typeLetter(ch);
+            return false;
+        }
+        if (ch >= 'ㄱ' && ch <= '힣') {
+            showFeedback('한글로 입력되고 있어요. 한/영 키를 눌러주세요.', '#ff6b66');
+            return false;
+        }
+    }
+
+    return true;
 };
 
 function finish() {
+    playing = false;
+
     let totalTime = 0;
-    let totalTypos = 0;
     let bestTime = rounds[0].timeMs;
+    let allWrong = 0;
+    let allKeys = 0;
     let correct = 0;
 
     for (let i = 0; i < rounds.length; i++) {
         totalTime += rounds[i].timeMs;
-        totalTypos += rounds[i].typos;
+        allWrong += rounds[i].wrongKeys;
+        allKeys += rounds[i].totalKeys;
         if (rounds[i].timeMs < bestTime) {
             bestTime = rounds[i].timeMs;
         }
@@ -145,15 +214,46 @@ function finish() {
         }
     }
 
+    let avgTime = Math.round(totalTime / totalRounds);
+    let typoRate = allWrong / allKeys;
+
+    let speedScore = Math.round(100 - (avgTime / 1000 - 3) * 10);
+    if (speedScore > 100) {
+        speedScore = 100;
+    }
+    if (speedScore < 0) {
+        speedScore = 0;
+    }
+    let accuracyScore = Math.round(correct / totalRounds * (1 - typoRate) * 100);
+    let score = Math.round(speedScore * 0.6 + accuracyScore * 0.4);
+
     let metrics = {
-        avgTimeMs: Math.round(totalTime / totalRounds),
+        avgTimeMs: avgTime,
         bestTimeMs: bestTime,
-        typoRate: totalTypos / (totalRounds * codeLength),
-        correct: correct
+        typoRate: typoRate,
+        correct: correct,
+        speedScore: speedScore,
+        accuracyScore: accuracyScore,
+        score: score,
+        grade: getGrade(score)
     };
 
     userData.addRecord({ mode: 'captcha', trials: totalRounds, metrics: metrics, rounds: rounds });
     showResult(metrics);
+}
+
+function getGrade(score) {
+    if (score >= 90) {
+        return '마스터';
+    } else if (score >= 75) {
+        return '고수';
+    } else if (score >= 60) {
+        return '프로';
+    } else if (score >= 40) {
+        return '루키';
+    } else {
+        return '뉴비';
+    }
 }
 
 function markTypos(round) {
@@ -170,6 +270,11 @@ function markTypos(round) {
 
 function showResult(metrics) {
     showScreen('result');
+
+    resultGrade.innerHTML =
+        '<span>등급</span>' +
+        '<b>' + metrics.grade + '</b>' +
+        '<p>' + metrics.score + '점 · 속도 ' + metrics.speedScore + '점 · 정확도 ' + metrics.accuracyScore + '점</p>';
 
     resultStats.innerHTML =
         '<div><span>평균 시간</span><b>' + toSec(metrics.avgTimeMs) + '초</b></div>' +
@@ -188,6 +293,7 @@ function showResult(metrics) {
         }
         output += '</span>';
         output += '<span class="time">' + toSec(round.timeMs) + '초</span>';
+        output += '<span class="miss">오타 ' + round.wrongKeys + '</span>';
         output += '</li>';
     }
     resultList.innerHTML = output;
@@ -197,8 +303,12 @@ document.querySelector('.start-btn').addEventListener('click', function() {
     startCountdown();
 });
 
+document.querySelector('.submit-btn').addEventListener('click', function() {
+    submitAnswer();
+});
+
 document.querySelector('.retry').addEventListener('click', function() {
     rounds = [];
-    feedback.textContent = '';
+    showFeedback('', '#bbb');
     startCountdown();
 });

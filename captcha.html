@@ -19,6 +19,8 @@
             <li>영문 6자리 보안문자를 5번 입력하십시오.</li>
             <li>입력하고 Enter를 누르면 다음 문제로 넘어갑니다.</li>
             <li>대소문자는 구분하지 않습니다.</li>
+            <li>틀린 글자를 지우고 다시 입력해도 오타로 기록됩니다.</li>
+            <li>속도와 정확도를 합산해 등급을 매깁니다.</li>
         </ul>
         <button class="start-btn" type="button">시작하기</button>
     </section>
@@ -30,20 +32,19 @@
 
     <section class="panel play">
         <div class="play-head">
-            <span>보안문자 입력</span>
+            <span class="play-title">보안문자 입력</span>
             <span class="progress">1 / 5</span>
         </div>
         <p class="guide">아래 문자를 입력해 주세요.</p>
         <div class="captcha"></div>
-        <form class="answer-form">
-            <input class="answer" maxlength="6" autocomplete="off" placeholder="보안문자 6자리">
-            <button type="submit">입력완료</button>
-        </form>
+        <div class="answer-slots"></div>
+        <button class="submit-btn" type="button">입력완료</button>
         <p class="feedback"></p>
     </section>
 
     <section class="panel result">
         <h2>결과</h2>
+        <div class="result-grade"></div>
         <div class="result-stats"></div>
         <ol class="result-list"></ol>
         <div class="result-actions">
