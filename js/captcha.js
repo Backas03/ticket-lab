@@ -36,10 +36,6 @@ function showScreen(name) {
     }
 }
 
-function toSec(ms) {
-    return Math.round(ms / 10) / 100;
-}
-
 function showFeedback(text, color) {
     feedback.textContent = text;
     feedback.style.color = color;
@@ -217,13 +213,7 @@ function finish() {
     let avgTime = Math.round(totalTime / totalRounds);
     let typoRate = allWrong / allKeys;
 
-    let speedScore = Math.round(100 - (avgTime / 1000 - 3) * 10);
-    if (speedScore > 100) {
-        speedScore = 100;
-    }
-    if (speedScore < 0) {
-        speedScore = 0;
-    }
+    let speedScore = limitScore(Math.round(100 - (avgTime / 1000 - 3) * 10));
     let accuracyScore = Math.round(correct / totalRounds * (1 - typoRate) * 100);
     let score = Math.round(speedScore * 0.6 + accuracyScore * 0.4);
 
@@ -240,20 +230,6 @@ function finish() {
 
     userData.addRecord({ mode: 'captcha', trials: totalRounds, metrics: metrics, rounds: rounds });
     showResult(metrics);
-}
-
-function getGrade(score) {
-    if (score >= 90) {
-        return '마스터';
-    } else if (score >= 75) {
-        return '고수';
-    } else if (score >= 60) {
-        return '프로';
-    } else if (score >= 40) {
-        return '루키';
-    } else {
-        return '뉴비';
-    }
 }
 
 function markTypos(round) {
