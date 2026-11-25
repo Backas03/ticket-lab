@@ -33,7 +33,7 @@ function showScreen(name) {
 }
 
 function random(min, max) {
-    return Math.round(min + Math.random() * (max - min));
+    return min + Math.floor(Math.random() * (max - min + 1));
 }
 
 function toSec(ms) {
@@ -60,7 +60,7 @@ function startCountdown() {
 function randomCode() {
     let code = '';
     for (let i = 0; i < codeLength; i++) {
-        code += letters[Math.floor(Math.random() * letters.length)];
+        code += letters[random(0, letters.length - 1)];
     }
     return code;
 }
