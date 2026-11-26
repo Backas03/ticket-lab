@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>좌석 선택 훈련 - TicketLAB</title>
+    <link rel="stylesheet" href="css/common.css">
+    <link rel="stylesheet" href="css/seat.css">
+    <script src="js/storage.js" defer></script>
+    <script src="js/common.js" defer></script>
+    <script src="js/seat.js" defer></script>
+</head>
+<body>
+    <div class="header">
+        <a href="index.html"><h1>TicketLAB</h1></a>
+    </div>
+
+    <section class="panel intro">
+        <h2>좌석 선택 훈련</h2>
+        <ul>
+            <li>3초 카운트다운 후 좌석 배치도가 열립니다.</li>
+            <li>시작할 때 이미 일부 좌석이 팔려 있고, 다른 사람들이 계속 좌석을 가져갑니다.</li>
+            <li>최대 4석까지 선택하고 예매하기를 눌러야 예매가 완료됩니다.</li>
+            <li>선택만 해 둔 좌석도 다른 사람이 먼저 예매하면 사라집니다.</li>
+            <li>좌석 수, 연석, 복도 좌석, 걸린 시간으로 점수를 매기며 총 3번 진행합니다.</li>
+        </ul>
+        <button class="start-btn" type="button">시작하기</button>
+    </section>
+
+    <section class="panel countdown">
+        <p class="countdown-label">좌석 배치도가 열립니다</p>
+        <p class="countdown-num">3</p>
+    </section>
+
+    <section class="panel play">
+        <div class="play-head">
+            <span class="play-title">좌석 선택</span>
+            <span class="progress">1 / 3</span>
+        </div>
+        <div class="legend">
+            <span class="legend-item"><span class="sample"></span>빈 좌석</span>
+            <span class="legend-item"><span class="sample sold"></span>판매됨</span>
+            <span class="legend-item"><span class="sample mine"></span>선택</span>
+        </div>
+        <div class="seat-map"></div>
+        <p class="picked"></p>
+        <button class="book-btn" type="button">예매하기</button>
+        <p class="feedback"></p>
+    </section>
+
+    <section class="panel result">
+        <h2>결과</h2>
+        <div class="result-grade"></div>
+        <div class="result-stats"></div>
+        <ol class="result-list"></ol>
+        <div class="result-actions">
+            <button class="retry" type="button">다시 하기</button>
+            <a class="home" href="index.html">메인으로</a>
+        </div>
+    </section>
+</body>
+</html>
