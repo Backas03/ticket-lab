@@ -59,6 +59,24 @@ button:hover {
     color: #fff;
 }
 
+.countdown {
+    display: none;
+    text-align: center;
+}
+
+.countdown-label {
+    font-size: 18px;
+    color: #999;
+}
+
+.countdown-num {
+    margin-top: 12px;
+    font-size: 96px;
+    font-weight: bold;
+    line-height: 1;
+    color: #f0803c;
+}
+
 .play {
     display: none;
     text-align: center;

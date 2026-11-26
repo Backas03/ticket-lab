@@ -2,6 +2,21 @@ function toSec(ms) {
     return Math.round(ms / 10) / 100;
 }
 
+function runCountdown(numberBox, done) {
+    let count = 3;
+    numberBox.textContent = count;
+
+    let timer = setInterval(function() {
+        count--;
+        if (count > 0) {
+            numberBox.textContent = count;
+        } else {
+            clearInterval(timer);
+            done();
+        }
+    }, 1000);
+}
+
 function limitScore(score) {
     if (score > 100) {
         return 100;

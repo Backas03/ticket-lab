@@ -45,20 +45,11 @@ function showFeedback(text, color) {
 
 function startCountdown() {
     showScreen('countdown');
-    let count = 3;
-    countNum.textContent = count;
-
-    let timer = setInterval(function() {
-        count--;
-        if (count > 0) {
-            countNum.textContent = count;
-        } else {
-            clearInterval(timer);
-            showScreen('play');
-            playing = true;
-            nextRound();
-        }
-    }, 1000);
+    runCountdown(countNum, function() {
+        showScreen('play');
+        playing = true;
+        nextRound();
+    });
 }
 
 function randomCode() {
