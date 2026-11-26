@@ -1,0 +1,46 @@
+.server-label {
+    margin-top: 32px;
+    font-size: 18px;
+    color: #999;
+}
+
+.clock {
+    margin-top: 8px;
+    font-family: Menlo, Consolas, monospace;
+    font-size: 56px;
+    font-weight: bold;
+    color: #f0803c;
+}
+
+.target {
+    margin-top: 4px;
+    font-size: 16px;
+    color: #bbb;
+}
+
+.book-btn {
+    display: block;
+    width: 280px;
+    margin: 32px auto 0;
+    padding: 20px 0;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.result-list .value {
+    float: left;
+    font-size: 17px;
+    font-weight: bold;
+}
+
+.result-list .state {
+    float: right;
+}
+
+.result-list .ok {
+    color: #7ee08a;
+}
+
+.result-list .fail {
+    color: #ff6b66;
+}

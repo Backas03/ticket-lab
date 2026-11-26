@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>정각 반응 훈련 - TicketLAB</title>
+    <link rel="stylesheet" href="css/common.css">
+    <link rel="stylesheet" href="css/reaction.css">
+    <script src="js/storage.js" defer></script>
+    <script src="js/common.js" defer></script>
+    <script src="js/reaction.js" defer></script>
+</head>
+<body>
+    <div class="header">
+        <a href="index.html"><h1>TicketLAB</h1></a>
+    </div>
+
+    <section class="panel intro">
+        <h2>정각 반응 훈련</h2>
+        <ul>
+            <li>서버 시간이 정각이 되면 예매하기 버튼이 열립니다.</li>
+            <li>버튼이 열리는 순간 최대한 빨리 클릭하십시오.</li>
+            <li>매 라운드 정각 3~5초 전부터 시작합니다.</li>
+            <li>정각 전에 누르면 실패로 기록됩니다.</li>
+            <li>총 5번 진행하며 반응 속도와 성공 횟수로 등급을 매깁니다.</li>
+        </ul>
+        <button class="start-btn" type="button">시작하기</button>
+    </section>
+
+    <section class="panel play">
+        <div class="play-head">
+            <span class="play-title">정각 반응</span>
+            <span class="progress">1 / 5</span>
+        </div>
+        <p class="server-label">서버 시간</p>
+        <p class="clock">--:--:--.---</p>
+        <p class="target"></p>
+        <button class="book-btn" type="button">예매 대기</button>
+        <p class="feedback"></p>
+    </section>
+
+    <section class="panel result">
+        <h2>결과</h2>
+        <div class="result-grade"></div>
+        <div class="result-stats"></div>
+        <ol class="result-list"></ol>
+        <div class="result-actions">
+            <button class="retry" type="button">다시 하기</button>
+            <a class="home" href="index.html">메인으로</a>
+        </div>
+    </section>
+</body>
+</html>
