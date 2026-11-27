@@ -1,8 +1,5 @@
 let totalRounds = 3;
 let maxSeats = 4;
-let rowNames = 'ABCDEFGHIJ';
-let rowCount = 10;
-let colCount = 20;
 
 let screens = {
     intro: document.querySelector('.intro'),
@@ -15,7 +12,7 @@ let countNum = document.querySelector('.countdown-num');
 let progress = document.querySelector('.progress');
 let seatMap = document.querySelector('.seat-map');
 let picked = document.querySelector('.picked');
-let bookBtn = document.querySelector('.book-btn');
+let bookBtn = document.querySelector('.seat-book');
 let feedback = document.querySelector('.feedback');
 let resultGrade = document.querySelector('.result-grade');
 let resultStats = document.querySelector('.result-stats');
@@ -44,25 +41,6 @@ function showFeedback(text, color) {
     feedback.style.color = color;
 }
 
-function seatName(i) {
-    return rowNames[Math.floor(i / colCount)] + (i % colCount + 1);
-}
-
-function blockOf(i) {
-    let col = i % colCount;
-    if (col < 5) {
-        return 0;
-    } else if (col < 15) {
-        return 1;
-    }
-    return 2;
-}
-
-function isAisle(i) {
-    let col = i % colCount;
-    return col == 4 || col == 5 || col == 14 || col == 15;
-}
-
 function countState(name) {
     let count = 0;
     for (let i = 0; i < states.length; i++) {
@@ -83,36 +61,12 @@ function mySeats() {
     return list;
 }
 
-function seatNames(list) {
-    let text = '';
-    for (let k = 0; k < list.length; k++) {
-        if (k > 0) {
-            text += ' ';
-        }
-        text += seatName(list[k]);
-    }
-    return text;
-}
-
 function paintSeat(i) {
     seatEls[i].setAttribute('class', 'seat ' + states[i]);
 }
 
 function drawSeats() {
-    let output = '<div class="stage">STAGE</div>';
-    for (let r = 0; r < rowCount; r++) {
-        output += '<div class="seat-row">';
-        output += '<span class="row-name">' + rowNames[r] + '</span>';
-        for (let c = 0; c < colCount; c++) {
-            if (c == 5 || c == 15) {
-                output += '<span class="aisle"></span>';
-            }
-            output += '<span class="seat"></span>';
-        }
-        output += '</div>';
-    }
-    seatMap.innerHTML = output;
-
+    seatMap.innerHTML = seatMapHtml();
     seatEls = seatMap.querySelectorAll('.seat');
     for (let i = 0; i < seatEls.length; i++) {
         seatEls[i].addEventListener('click', function() {
@@ -136,7 +90,7 @@ function startRound() {
     runCountdown(countNum, function() {
         progress.textContent = (rounds.length + 1) + ' / ' + totalRounds;
         states = [];
-        for (let i = 0; i < rowCount * colCount; i++) {
+        for (let i = 0; i < seatRowCount * seatColCount; i++) {
             if (Math.random() < 0.4) {
                 states.push('sold');
             } else {
@@ -214,35 +168,6 @@ function clickSeat(i) {
     updatePicked();
 }
 
-function isTogether(list) {
-    if (list.length < 2) {
-        return false;
-    }
-    let first = list[0];
-    let last = list[list.length - 1];
-    if (Math.floor(first / colCount) != Math.floor(last / colCount)) {
-        return false;
-    }
-    if (blockOf(first) != blockOf(last)) {
-        return false;
-    }
-    return last - first == list.length - 1;
-}
-
-function roundTags(round) {
-    let text = '';
-    if (round.together) {
-        text += round.count + '연석';
-    }
-    if (round.aisle) {
-        if (text != '') {
-            text += ' · ';
-        }
-        text += '복도';
-    }
-    return text;
-}
-
 function endRound(list) {
     playing = false;
     clearInterval(buyTimer);
@@ -250,27 +175,10 @@ function endRound(list) {
     let timeMs = new Date().getTime() - startedAt;
     let count = list.length;
     let together = isTogether(list);
-    let aisle = false;
-    for (let k = 0; k < count; k++) {
-        if (isAisle(list[k])) {
-            aisle = true;
-        }
-    }
+    let aisle = hasAisle(list);
+    let score = seatScore(count, together, aisle, timeMs);
 
-    let score = 0;
-    if (count > 0) {
-        score = count * 10;
-        if (together) {
-            score += count * 5;
-        }
-        if (aisle) {
-            score += 10;
-        }
-        let timeScore = limitScore(Math.round(100 - (timeMs / 1000 - 3) * 7));
-        score += Math.round(timeScore * 0.3);
-    }
-
-    let round = {
+    rounds.push({
         seats: seatNames(list),
         count: count,
         together: together,
@@ -278,13 +186,13 @@ function endRound(list) {
         missed: missed,
         timeMs: timeMs,
         score: score
-    };
-    rounds.push(round);
+    });
 
     if (count > 0) {
         let text = '예매 완료 · ' + count + '석';
-        if (roundTags(round) != '') {
-            text += ' · ' + roundTags(round);
+        let tags = seatTags(count, together, aisle);
+        if (tags != '') {
+            text += ' · ' + tags;
         }
         showFeedback(text + ' · ' + score + '점', '#7ee08a');
     }
@@ -381,7 +289,7 @@ function showResult(metrics) {
             output += '<span class="time">-</span>';
         }
         output += '<span class="score">' + round.score + '점</span>';
-        output += '<span class="tags">' + roundTags(round) + '</span>';
+        output += '<span class="tags">' + seatTags(round.count, round.together, round.aisle) + '</span>';
         output += '</li>';
     }
     resultList.innerHTML = output;

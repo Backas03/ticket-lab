@@ -1,5 +1,4 @@
 let totalRounds = 5;
-let oneDay = 24 * 60 * 60 * 1000;
 
 let screens = {
     intro: document.querySelector('.intro'),
@@ -36,40 +35,6 @@ function showScreen(name) {
 function showFeedback(text, color) {
     feedback.textContent = text;
     feedback.style.color = color;
-}
-
-function twoDigits(n) {
-    if (n < 10) {
-        return '0' + n;
-    }
-    return '' + n;
-}
-
-function threeDigits(n) {
-    if (n < 10) {
-        return '00' + n;
-    } else if (n < 100) {
-        return '0' + n;
-    }
-    return '' + n;
-}
-
-function formatTime(ms, withMs) {
-    while (ms < 0) {
-        ms += oneDay;
-    }
-    while (ms >= oneDay) {
-        ms -= oneDay;
-    }
-
-    let h = Math.floor(ms / 3600000);
-    let m = Math.floor(ms / 60000) % 60;
-    let s = Math.floor(ms / 1000) % 60;
-    let text = twoDigits(h) + ':' + twoDigits(m) + ':' + twoDigits(s);
-    if (withMs) {
-        text += '.' + threeDigits(ms % 1000);
-    }
-    return text;
 }
 
 function setWaiting() {
