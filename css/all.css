@@ -1,0 +1,22 @@
+.elapsed {
+    margin-top: 12px;
+    font-size: 14px;
+    color: #999;
+}
+
+.result-list .step-name {
+    float: left;
+    width: 90px;
+    font-weight: bold;
+}
+
+.result-list .detail {
+    float: left;
+    color: #bbb;
+}
+
+.result-list .step-score {
+    float: right;
+    font-weight: bold;
+    color: #f0803c;
+}
