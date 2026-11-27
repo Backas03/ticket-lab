@@ -1,0 +1,94 @@
+.records {
+    margin-top: 24px;
+}
+
+.mode-stats p {
+    margin-top: 4px;
+    font-size: 13px;
+    color: #bbb;
+}
+
+.filter {
+    margin-right: 6px;
+    padding: 8px 18px;
+    border-radius: 20px;
+    background-color: #333;
+    color: #bbb;
+    font-size: 15px;
+}
+
+.filter-on {
+    background-color: #f0803c;
+    color: #fff;
+}
+
+.record-table {
+    width: 100%;
+    margin-top: 20px;
+    border-collapse: collapse;
+    font-size: 15px;
+}
+
+.record-table th {
+    padding: 10px 8px;
+    border-bottom: 2px solid #444;
+    font-weight: normal;
+    text-align: left;
+    color: #999;
+}
+
+.record-table td {
+    padding: 12px 8px;
+    border-bottom: 1px solid #333;
+}
+
+.record-row {
+    cursor: pointer;
+}
+
+.record-row:hover {
+    background-color: #2c2c2c;
+}
+
+.record-table .score {
+    font-weight: bold;
+    color: #f0803c;
+}
+
+.detail-row td {
+    padding: 12px 16px;
+    background-color: #1a1a1a;
+    font-size: 14px;
+    line-height: 1.8;
+    color: #bbb;
+}
+
+.empty {
+    margin-top: 24px;
+    text-align: center;
+    color: #999;
+}
+
+.hint {
+    margin-top: 12px;
+    font-size: 13px;
+    color: #777;
+}
+
+.records-actions {
+    margin-top: 28px;
+    text-align: right;
+}
+
+.reset-btn {
+    padding: 10px 24px;
+    border: 2px solid #ff6b66;
+    background-color: #222;
+    color: #ff6b66;
+    font-size: 15px;
+}
+
+.reset-btn:hover {
+    background-color: #ff6b66;
+    color: #fff;
+}

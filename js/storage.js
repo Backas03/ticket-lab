@@ -20,6 +20,10 @@ let userData = {
         this.save(data);
     },
 
+    clear: function() {
+        localStorage.removeItem(this.storageKey);
+    },
+
     getRecords: function(mode) {
         let records = this.load().records;
         let result = [];

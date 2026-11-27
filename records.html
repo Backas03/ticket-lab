@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>마이페이지 - TicketLAB</title>
+    <link rel="stylesheet" href="css/common.css">
+    <link rel="stylesheet" href="css/records.css">
+    <script src="js/storage.js" defer></script>
+    <script src="js/common.js" defer></script>
+    <script src="js/records.js" defer></script>
+</head>
+<body>
+    <div class="header">
+        <a href="index.html"><h1>TicketLAB</h1></a>
+    </div>
+
+    <section class="panel summary">
+        <h2>마이페이지</h2>
+        <div class="result-grade overall"></div>
+        <div class="result-stats mode-stats"></div>
+    </section>
+
+    <section class="panel records">
+        <h2>훈련 기록</h2>
+        <div class="filters">
+            <button class="filter" type="button">전체</button>
+            <button class="filter" type="button">통합 훈련</button>
+            <button class="filter" type="button">정각 반응</button>
+            <button class="filter" type="button">좌석 선택</button>
+            <button class="filter" type="button">보안문자</button>
+        </div>
+        <table class="record-table">
+            <thead>
+                <tr>
+                    <th>날짜</th>
+                    <th>훈련</th>
+                    <th>점수</th>
+                    <th>등급</th>
+                    <th>주요 기록</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+        <p class="empty">아직 기록이 없어요. 메인에서 훈련을 시작해 보세요.</p>
+        <p class="hint">기록을 누르면 라운드별 내용을 볼 수 있어요.</p>
+        <div class="records-actions">
+            <button class="reset-btn" type="button">기록 전체 삭제</button>
+        </div>
+    </section>
+</body>
+</html>
