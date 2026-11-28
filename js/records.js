@@ -1,11 +1,3 @@
-let modeKeys = ['all', 'reaction', 'seat', 'captcha'];
-let modeNames = {
-    all: '통합 훈련',
-    reaction: '정각 반응',
-    seat: '좌석 선택',
-    captcha: '보안문자'
-};
-
 let overall = document.querySelector('.overall');
 let modeStats = document.querySelector('.mode-stats');
 let filters = document.querySelectorAll('.filter');
@@ -87,37 +79,6 @@ function renderSummary() {
         let score = Math.round(sum / modes);
         overall.innerHTML = '<span>전체 등급</span><b>' + getGrade(score) + '</b><p>평균 ' + score + '점 · 총 ' + total + '회 훈련</p>';
     }
-}
-
-function percent(rate) {
-    return Math.round(rate * 1000) / 10 + '%';
-}
-
-function summaryText(record) {
-    let m = record.metrics;
-    if (record.mode == 'captcha') {
-        return '평균 ' + toSec(m.avgTimeMs) + '초 · 오타율 ' + percent(m.typoRate) + ' · 정답 ' + m.correct + '/' + record.trials;
-    }
-    if (record.mode == 'reaction') {
-        if (m.avgMs == null) {
-            return '성공 0/' + record.trials;
-        }
-        return '평균 ' + m.avgMs + 'ms · 성공 ' + m.success + '/' + record.trials;
-    }
-    if (record.mode == 'seat') {
-        let text = '확보 ' + m.seats + '석 · 4연석 ' + m.fourTogether + '회';
-        if (m.avgTimeMs != null) {
-            text += ' · 평균 ' + toSec(m.avgTimeMs) + '초';
-        }
-        return text;
-    }
-    if (record.mode == 'all') {
-        if (m.seatCount > 0) {
-            return '총 ' + toSec(m.totalMs) + '초 · ' + m.seats;
-        }
-        return '총 ' + toSec(m.totalMs) + '초 · 매진';
-    }
-    return '';
 }
 
 function seatLine(count, seats, together, aisle) {
