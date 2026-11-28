@@ -108,9 +108,7 @@ drawRadar(
     [60, 65, 50, 30, 55, 45]
 );
 
-function aiAnalyze() {
 
-}
 
 let clockEl = document.querySelector('.server-time .clock');
 let leftEl = document.querySelector('.server-time .left');

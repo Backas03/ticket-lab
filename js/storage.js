@@ -22,6 +22,7 @@ let userData = {
 
     clear: function() {
         localStorage.removeItem(this.storageKey);
+        localStorage.removeItem(this.storageKey + '-summary');
     },
 
     getRecords: function(mode) {
